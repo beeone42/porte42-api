@@ -28,6 +28,14 @@ def pull(key):
     subprocess.call(["/usr/bin/git", "pull"])
     return "ok"
 
+@route('/<key>/reboot')
+def pull(key):
+    if (key != config["key"]):
+        return "ko"
+    os.chdir(config["path"]);
+    subprocess.call(["/sbin/reboot"])
+    return "ok"
+
 if __name__ == "__main__":
     config = open_and_load_config()
     run(host=config["host"], port=config["port"], debug=config["debug"])
