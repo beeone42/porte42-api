@@ -17,16 +17,17 @@ def open_and_load_config():
 
 
 @route('/')
-@route('/hello')
 def hello():
     return "Porte42 API"
 
-@route('/pull')
-def pull():
+@route('/<key>/pull')
+def pull(key):
+    if (key != config["key"]):
+        return "ko"
     os.chdir(config["path"]);
     subprocess.call(["/usr/bin/git", "pull"])
     return "ok"
 
 if __name__ == "__main__":
     config = open_and_load_config()
-    run(host='localhost', port=8080, debug=True)
+    run(host=config["host"], port=config["port"], debug=config["debug"])
